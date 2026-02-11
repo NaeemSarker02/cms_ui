@@ -1,36 +1,30 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { motion } from 'framer-motion';
+// Import the pieces from your components folder
 import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 
-/**
- * Main Dashboard Layout
- * Wraps all authenticated pages with sidebar and header
- */
 const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar - Mobile drawer logic handled via props */}
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Header - Receives the toggle function for mobile */}
+        <Header onMenuClick={() => setSidebarOpen(true)} />
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto custom-scrollbar p-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
+          <div className="max-w-7xl mx-auto">
+            {/* This is where SuperAdminDashboard or CustomerDashboard will render */}
             <Outlet />
-          </motion.div>
+          </div>
         </main>
+
+        <Footer />
       </div>
     </div>
   );
